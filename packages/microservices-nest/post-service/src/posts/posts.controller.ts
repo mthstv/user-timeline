@@ -14,6 +14,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthUserDto } from 'src/auth/dtos/auth.dto';
+import { CreateLikeDto } from './dto/create-like.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -28,6 +29,18 @@ export class PostsController {
     return this.postsService.create({
       createdBy: req.user?.sub,
       ...createPostDto,
+    });
+  }
+
+  @Post('/like')
+  @UseGuards(AuthGuard)
+  likePost(
+    @Request() req: { user: AuthUserDto },
+    @Body() createLikeDto: CreateLikeDto,
+  ) {
+    return this.postsService.addOrRemoveLikeToPost({
+      userId: req.user?.sub,
+      ...createLikeDto,
     });
   }
 
