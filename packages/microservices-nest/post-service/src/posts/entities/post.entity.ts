@@ -5,7 +5,9 @@ import {
   DeleteDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Like } from './like.entity';
 
 @Entity()
 export class Post {
@@ -18,8 +20,8 @@ export class Post {
   @Column({ nullable: false })
   createdBy!: string;
 
-  @Column({ nullable: false, default: 0 })
-  likes!: number;
+  @OneToMany(() => Like, (like) => like.post)
+  likes: Like[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt!: Date;
