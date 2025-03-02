@@ -12,7 +12,7 @@ export class Profile {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   username?: string;
 
   @Column({ nullable: true })
@@ -24,7 +24,7 @@ export class Profile {
   @Column({ nullable: true })
   bio?: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   userId!: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
