@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 import { Heart } from 'lucide-react';
 import { useState } from 'react';
 
@@ -44,13 +45,17 @@ export const Post = () => {
       <CardContent>
         <p>{post.content}</p>
       </CardContent>
-      <CardFooter className="flex items-center">
+      <CardFooter className="flex items-end">
+        <p className="text-xs text-muted-foreground">02/05/2025 12:30 PM</p>
         <div className="ml-auto cursor-pointer flex items-center gap-2">
-          <span className={!like ? 'text-muted-foreground' : 'text-red-600'}>
+          <span className={like ? 'text-red-600' : 'text-muted-foreground'}>
             {like ? 2 : 1}
           </span>
           <Heart
-            className={like ? 'fill-red-600 text-red-600' : 'fill-background'}
+            className={cn(
+              like ? 'fill-red-600' : 'fill-background',
+              like ? 'text-red-600' : 'text-muted-foreground'
+            )}
             onClick={() => setLike(!like)}
           />
         </div>
