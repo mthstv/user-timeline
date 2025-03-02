@@ -1,5 +1,7 @@
 'use client';
 
+import { NavItems } from '@/components/pages/sidebar/nav-items';
+import { UserDropdown } from '@/components/pages/sidebar/user-dropdown';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -30,11 +32,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         "fixed lg:relative transition-transform duration-300 z-40",
         !sidebarOpen && "-translate-x-full lg:translate-x-0"
       )}>
-        <div className="w-full p-6 border-b border-muted">
+        <div className="w-full p-8 border-b border-muted">
           <div className="max-w-[100px] mx-auto"></div>
         </div>
-        <div />
+        <NavItems />
         <div className="w-full mt-auto border-t border-muted px-3 py-4 flex items-center justify-between gap-2">
+          <UserDropdown user={{ name: 'John Doe' }} />
           <ThemeToggle />
         </div>
       </aside>
