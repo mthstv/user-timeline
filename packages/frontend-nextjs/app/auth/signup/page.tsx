@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { AtSign } from 'lucide-react';
 
 export default function Login() {
   return (
@@ -35,7 +36,26 @@ export default function Login() {
               >
                 Username
               </label>
-              <Input id="username" placeholder="johndoe123" required />
+              <div className="flex items-center">
+                <span className="bg-secondary border border-secondary rounded p-[5px] rounded-r-none">
+                  <AtSign />
+                </span>
+                <Input
+                  className="rounded-l-none"
+                  placeholder="johndoe123"
+                  id="username"
+                  required
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <label
+                htmlFor="displayName"
+                className="block text-sm text-muted-foreground"
+              >
+                Display name
+              </label>
+              <Input id="displayName" placeholder="John Doe" required />
             </div>
             <div className="flex flex-col gap-1">
               <label
@@ -66,7 +86,7 @@ export default function Login() {
               />
             </div>
             <Button type="submit" className="w-full my-4">
-              Continue
+              Register
             </Button>
             <Link href="/auth/login">
               <Button
