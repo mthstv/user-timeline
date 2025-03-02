@@ -1,5 +1,6 @@
 'use client';
 
+import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -7,7 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LogOut } from 'lucide-react';
 
 type UserDropdownProps = {
@@ -20,20 +20,11 @@ type UserDropdownProps = {
 export const UserDropdown = ({ user }: UserDropdownProps) => {
   if (!user) return null;
 
-  const initials = user?.name
-    ?.split(' ')
-    .slice(0, 2)
-    .map((n: string) => n[0])
-    .join('');
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="w-full gap-2 justify-start px-2">
-          <Avatar className="w-7 h-7 block">
-            <AvatarImage src={user.image ?? ''} />
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
+          <Avatar user={{name: 'John Doe'}} />
           <p>{user.name}</p>
         </Button>
       </DropdownMenuTrigger>
