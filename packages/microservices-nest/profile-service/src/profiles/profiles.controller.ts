@@ -40,7 +40,13 @@ export class ProfilesController {
   @Get(':id')
   @UseGuards(AuthGuard)
   findOne(@Param('id') id: string) {
-    return this.profilesService.findOne(id);
+    return this.profilesService.findOne({ id });
+  }
+
+  @Get('user/:userId')
+  @UseGuards(AuthGuard)
+  findOneByUserId(@Param('userId') userId: string) {
+    return this.profilesService.findOne({ userId });
   }
 
   @Patch(':id')

@@ -21,8 +21,8 @@ export class ProfilesService {
     return this.profilesRepository.find();
   }
 
-  findOne(id: string) {
-    return this.profilesRepository.findOneBy({ id });
+  findOne(params: { id?: string; userId?: string }) {
+    return this.profilesRepository.findOneBy({ ...params });
   }
 
   update(id: string, updateProfileDto: UpdateProfileDto) {
