@@ -6,10 +6,10 @@ type AvatarProps = {
     name: string;
     image?: string;
   };
-  size?: string;
+  size?: number;
 };
 
-export const Avatar = ({ user, size = '7' }: AvatarProps) => {
+export const Avatar = ({ user, size = 9 }: AvatarProps) => {
   const initials = user.name
     ?.split(' ')
     .slice(0, 2)
