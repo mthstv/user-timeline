@@ -25,11 +25,15 @@ export class ProfilesService {
     return this.profilesRepository.findOneBy({ ...params });
   }
 
-  update(id: string, updateProfileDto: UpdateProfileDto) {
-    return this.profilesRepository.update(id, { ...updateProfileDto });
+  async updateByUserId(userId: string, updateProfileDto: UpdateProfileDto) {
+    await this.profilesRepository.update({ userId }, { ...updateProfileDto });
+
+    return this.profilesRepository.findOneBy({ userId });
   }
 
-  remove(id: string) {
-    return this.profilesRepository.delete(id);
+  async removeByUserId(userId: string) {
+    await this.profilesRepository.delete({ userId });
+
+    return { message: 'Profile deleted successfully' };
   }
 }

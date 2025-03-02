@@ -16,11 +16,11 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthUserDto } from 'src/auth/dtos/auth.dto';
 
 @Controller('profiles')
+@UseGuards(AuthGuard)
 export class ProfilesController {
   constructor(private readonly profilesService: ProfilesService) {}
 
   @Post()
-  @UseGuards(AuthGuard)
   create(
     @Request() req: { user: AuthUserDto },
     @Body() createProfileDto: CreateProfileDto,
@@ -32,32 +32,35 @@ export class ProfilesController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
   findAll() {
     return this.profilesService.findAll();
   }
 
+  @Get('auth')
+  findOneByAuth(@Request() req: { user: AuthUserDto }) {
+    return this.profilesService.findOne({ userId: req.user?.sub });
+  }
+
   @Get(':id')
-  @UseGuards(AuthGuard)
   findOne(@Param('id') id: string) {
     return this.profilesService.findOne({ id });
   }
 
   @Get('user/:userId')
-  @UseGuards(AuthGuard)
   findOneByUserId(@Param('userId') userId: string) {
     return this.profilesService.findOne({ userId });
   }
 
-  @Patch(':id')
-  @UseGuards(AuthGuard)
-  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
-    return this.profilesService.update(id, updateProfileDto);
+  @Patch()
+  updateAuthProfile(
+    @Request() req: { user: AuthUserDto },
+    @Body() updateProfileDto: UpdateProfileDto,
+  ) {
+    return this.profilesService.updateByUserId(req.user?.sub, updateProfileDto);
   }
 
-  @Delete(':id')
-  @UseGuards(AuthGuard)
-  remove(@Param('id') id: string) {
-    return this.profilesService.remove(id);
+  @Delete()
+  removeAuthProfile(@Request() req: { user: AuthUserDto }) {
+    return this.profilesService.removeByUserId(req.user?.sub);
   }
 }
