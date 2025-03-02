@@ -17,11 +17,11 @@ import { AuthUserDto } from 'src/auth/dtos/auth.dto';
 import { CreateLikeDto } from './dto/create-like.dto';
 
 @Controller('posts')
+@UseGuards(AuthGuard)
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  @UseGuards(AuthGuard)
   create(
     @Request() req: { user: AuthUserDto },
     @Body() createPostDto: CreatePostDto,
@@ -33,7 +33,6 @@ export class PostsController {
   }
 
   @Post('/like')
-  @UseGuards(AuthGuard)
   likePost(
     @Request() req: { user: AuthUserDto },
     @Body() createLikeDto: CreateLikeDto,
@@ -45,35 +44,36 @@ export class PostsController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
   findAll() {
     return this.postsService.findAll();
   }
 
-  @Get('/user:userId')
-  @UseGuards(AuthGuard)
-  findByUserId(
-    @Request() req: { user: AuthUserDto },
-    @Param('userId') userId: string,
-  ) {
+  @Get('/user/auth')
+  findByAuthUser(@Request() req: { user: AuthUserDto }) {
+    return this.postsService.findByUserId(req.user?.sub);
+  }
+
+  @Get('/user/:userId')
+  findByUserId(@Param('userId') userId: string) {
     return this.postsService.findByUserId(userId);
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard)
   findOne(@Param('id') id: string) {
     return this.postsService.findOne(id);
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard)
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(id, updatePostDto);
+  update(
+    @Request() req: { user: AuthUserDto },
+    @Param('id') id: string,
+    @Body() updatePostDto: UpdatePostDto,
+  ) {
+    return this.postsService.update(id, req.user?.sub, updatePostDto);
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard)
-  remove(@Param('id') id: string) {
-    return this.postsService.remove(id);
+  remove(@Request() req: { user: AuthUserDto }, @Param('id') id: string) {
+    return this.postsService.remove(id, req.user?.sub);
   }
 }
