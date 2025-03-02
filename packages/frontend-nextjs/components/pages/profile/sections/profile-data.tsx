@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useState } from 'react';
 import { EditProfileDialog } from '../edit-profile-dialog';
+import { DeleteProfileDialog } from '../delete-profile-dialog';
 
 type ProfileDataProps = {
   user: Record<string, string | null>;
@@ -11,6 +12,7 @@ type ProfileDataProps = {
 
 export const ProfileData = ({ user }: ProfileDataProps) => {
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   return (
     <main className="flex flex-col gap-4">
@@ -28,20 +30,30 @@ export const ProfileData = ({ user }: ProfileDataProps) => {
             <p className="text-3xl text-muted-foreground">JD</p>
           )}
         </div>
-        <Button
-          className="ml-auto"
-          variant="outline"
-          onClick={() => setShowEditModal(true)}
-        >
+        <div className="ml-auto"></div>
+        <Button variant="outline" onClick={() => setShowEditModal(true)}>
           Edit profile
         </Button>
-        <EditProfileDialog open={showEditModal} setOpen={setShowEditModal} />
+        <Button variant="destructive" onClick={() => setShowDeleteModal(true)}>
+          Delete profile
+        </Button>
       </div>
       <div>
         <h2 className="text-xl">{user.name}</h2>
         <span className="text-lg text-muted-foreground">@{user.username}</span>
         <p className="my-2">{user.bio}</p>
       </div>
+
+      <EditProfileDialog
+        user={user}
+        open={showEditModal}
+        setOpen={setShowEditModal}
+      />
+
+      <DeleteProfileDialog
+        open={showDeleteModal}
+        setOpen={setShowDeleteModal}
+      />
     </main>
   );
 };
