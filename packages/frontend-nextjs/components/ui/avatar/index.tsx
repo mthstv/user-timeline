@@ -1,17 +1,15 @@
-import {
-  Avatar as AvatarRoot,
-  AvatarFallback,
-  AvatarImage
-} from './primitive';
+import { cn } from '@/lib/utils';
+import { Avatar as AvatarRoot, AvatarFallback, AvatarImage } from './primitive';
 
 type AvatarProps = {
   user: {
-    name: string,
-    image?: string,
+    name: string;
+    image?: string;
   };
+  size?: string;
 };
 
-export const Avatar = ({ user }: AvatarProps) => {
+export const Avatar = ({ user, size = '7' }: AvatarProps) => {
   const initials = user.name
     ?.split(' ')
     .slice(0, 2)
@@ -19,7 +17,7 @@ export const Avatar = ({ user }: AvatarProps) => {
     .join('');
 
   return (
-    <AvatarRoot className="w-7 h-7 block">
+    <AvatarRoot className={cn(`w-${size} h-${size}`, 'block')}>
       <AvatarImage src={user?.image ?? ''} />
       <AvatarFallback>{initials}</AvatarFallback>
     </AvatarRoot>
