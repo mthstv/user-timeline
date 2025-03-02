@@ -6,6 +6,10 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/*"
-  ]
+    "packages/**"
+  ],
+  "scripts": {
+    "start:dev": "yarn workspace auth-service start:dev & yarn workspace profile-service start:dev & yarn workspace post-service start:dev",
+    "migration:run": "yarn workspace auth-service migration:run & yarn workspace profile-service migration:run & yarn workspace post-service migration:run"
+  }
 }
