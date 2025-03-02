@@ -47,12 +47,16 @@ export class PostsService {
       .getOne();
   }
 
-  update(id: string, updatePostDto: UpdatePostDto) {
-    return this.postsRepository.update(id, { ...updatePostDto });
+  async update(id: string, createdBy: string, updatePostDto: UpdatePostDto) {
+    await this.postsRepository.update({ id, createdBy }, { ...updatePostDto });
+
+    return this.postsRepository.findOneBy({ id });
   }
 
-  remove(id: string) {
-    return this.postsRepository.delete(id);
+  async remove(id: string, createdBy: string) {
+    await this.postsRepository.delete({ id, createdBy });
+
+    return { message: 'Post deleted successfully' };
   }
 
   async addOrRemoveLikeToPost(createLikeDto: CreateLikeDto) {
