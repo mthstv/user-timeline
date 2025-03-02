@@ -37,12 +37,16 @@ export const Post = () => {
         <p>{post.content}</p>
       </CardContent>
       <CardFooter className="flex items-center">
-        <Heart
-          className="ml-auto cursor-pointer"
-          color="red"
-          fill={like ? 'red' : undefined}
-          onClick={() => setLike(!like)}
-        />
+        <div className="ml-auto cursor-pointer flex items-center gap-2">
+          <span className={!like ? 'text-gray-300' : 'text-red-600'}>
+            {like ? 2 : 1}
+          </span>
+          <Heart
+            color={like ? 'red' : 'gray'}
+            fill={like ? 'red' : undefined}
+            onClick={() => setLike(!like)}
+          />
+        </div>
       </CardFooter>
     </Card>
   );
