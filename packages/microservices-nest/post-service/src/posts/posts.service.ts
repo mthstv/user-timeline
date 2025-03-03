@@ -44,7 +44,7 @@ export class PostsService {
       .where('post.createdBy = :userId', { userId })
       .leftJoin('post.likes', 'like')
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
-      .getOne();
+      .getMany();
   }
 
   async update(id: string, createdBy: string, updatePostDto: UpdatePostDto) {
