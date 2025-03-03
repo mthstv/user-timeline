@@ -4,7 +4,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { AtSign } from 'lucide-react';
-import { FieldValues, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { handleSignIn, register as registerUser } from '@/services/auth';
 
 export const SignupForm = () => {
   const {
@@ -12,9 +14,23 @@ export const SignupForm = () => {
     handleSubmit,
     watch,
     formState: { errors },
+    getValues,
   } = useForm();
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
+
+  const { mutate: handleLogin } = useMutation({
+    mutationFn: handleSignIn,
+  });
+
+  const { mutate: handleSignup } = useMutation({
+    mutationFn: registerUser,
+    onSuccess: () => {
+      const data = getValues();
+      handleLogin(data as any);
+    },
+  });
+
+  const onSubmit = (data: SignupDto) => {
+    handleSignup(data);
   };
 
   return (
