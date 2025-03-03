@@ -15,6 +15,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
   async function loadProfile() {
     try {
       const profile = await getProfile();
+
       const initials = profile.displayName
         ?.split(' ')
         .slice(0, 2)

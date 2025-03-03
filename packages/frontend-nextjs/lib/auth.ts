@@ -33,19 +33,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const user = await login(credentials?.email as string, credentials?.password as string);
-        const decodedToken = jwtDecode<DecodedToken>(user.access_token);
-        const userId = decodedToken.sub;
+        try {
+          const user = await login(credentials?.email as string, credentials?.password as string);
+          const decodedToken = jwtDecode<DecodedToken>(user.access_token);
+          const userId = decodedToken.sub;
 
-        if (user) {
-          return {
-            id: userId,
-            email: credentials?.email as string,
-            accessToken: user.access_token,
-          };
+          if (user) {
+            return {
+              id: userId,
+              email: credentials?.email as string,
+              accessToken: user.access_token,
+            };
+          }
+
+          return null;
+        } catch (error) {
+          console.error(error);
+          return null;
         }
-
-        return null;
       },
     }),
   ],
