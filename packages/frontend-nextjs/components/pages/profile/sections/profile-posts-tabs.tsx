@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Post } from '@/components/pages/feed/post';
+import { FeedList } from '../../feed/feed-list';
 
 export const ProfilePostsTabs = () => {
   return (
@@ -9,16 +9,10 @@ export const ProfilePostsTabs = () => {
         <TabsTrigger value="liked-posts">Liked posts</TabsTrigger>
       </TabsList>
       <TabsContent value="own-posts">
-        <div className="flex flex-col gap-4">
-          <Post />
-          <Post />
-          <Post />
-        </div>
+        <FeedList limitBy="own-posts" />
       </TabsContent>
       <TabsContent value="liked-posts">
-        <div className="flex flex-col gap-4">
-          <Post />
-        </div>
+        <FeedList limitBy="liked-posts" />
       </TabsContent>
     </Tabs>
   );

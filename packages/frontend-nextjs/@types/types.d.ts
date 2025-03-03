@@ -12,14 +12,25 @@ type SigninDto = {
 }
 
 type UserProfile = {
+  userId?: string;
   username?: string;
   displayName?: string;
   bio?: string;
-  avatar?: string;
+  avatar?: string | null;
   initials?: string;
 };
 
 type SessionUser = {
   id?: string;
   accessToken?: string;
+}
+
+type UserPost = {
+  id?: string;
+  content?: string;
+  createdBy?: string;
+  createdAt?: string;
+  likesCount?: number;
+  hasLiked?: boolean;
+  user?: UserProfile;
 }
