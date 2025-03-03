@@ -16,11 +16,43 @@ export async function getProfile() {
     throw new Error(data.error);
   }
 
-  return data;
+  const initials = data.displayName
+    ?.split(' ')
+    .slice(0, 2)
+    .map((n: string) => n[0])
+    .join('');
+
+
+  return {...data, initials};
 }
 
+export async function getProfileByUser(userId?: string) {
+  if (!userId) return;
+  const session = await auth();
+
+  const { data } = await profilesAPI.get(`/profiles/user/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`
+    }
+  });
+
+  if (data.error) {
+    throw new Error(data.error);
+  }
+
+  const initials = data.displayName
+    ?.split(' ')
+    .slice(0, 2)
+    .map((n: string) => n[0])
+    .join('');
+
+
+  return {...data, initials};
+}
+
+
 export async function createProfile(
-  { username, displayName }: UserProfile
+  { username, displayName, accessToken }: UserProfile & { accessToken: string }
 ) {
   const session = await auth();
 
@@ -29,7 +61,7 @@ export async function createProfile(
     displayName
   }, {
     headers: {
-      Authorization: `Bearer ${session?.accessToken}`
+      Authorization: `Bearer ${accessToken || session?.accessToken}`
     }
   })
 

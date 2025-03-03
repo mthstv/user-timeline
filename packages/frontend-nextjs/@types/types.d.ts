@@ -32,5 +32,5 @@ type UserPost = {
   createdAt?: string;
   likesCount?: number;
   hasLiked?: boolean;
-  user?: UserProfile;
+  profile?: UserProfile;
 }

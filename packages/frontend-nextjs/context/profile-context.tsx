@@ -15,14 +15,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
   async function loadProfile() {
     try {
       const profile = await getProfile();
-
-      const initials = profile.displayName
-        ?.split(' ')
-        .slice(0, 2)
-        .map((n: string) => n[0])
-        .join('');
-
-      setProfile({ ...profile, initials });
+      setProfile(profile);
     } catch (error) {
       console.error('Failed to load user profile:', error);
       setProfile(null);

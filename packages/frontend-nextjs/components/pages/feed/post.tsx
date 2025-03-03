@@ -40,21 +40,21 @@ export const Post = ({ post }: PostProps) => {
   return (
     <Card className="transition-all">
       <CardHeader>
-        {post.user ? (
+        {post.profile ? (
           <div className="flex flex-row items-center gap-2">
-            <ProfileTooltip>
+            <ProfileTooltip profile={post.profile}>
               <span className="cursor-pointer">
-                <Avatar user={post.user} />
+                <Avatar user={post.profile} />
               </span>
             </ProfileTooltip>
 
-            <ProfileTooltip>
+            <ProfileTooltip profile={post.profile}>
               <div className="size-fit">
                 <CardTitle className="size-fit">
-                  {post.user?.displayName}
+                  {post.profile?.displayName}
                 </CardTitle>
                 <CardDescription className="size-fit">
-                  {`@${post.user.username}`}
+                  {`@${post.profile.username}`}
                 </CardDescription>
               </div>
             </ProfileTooltip>
