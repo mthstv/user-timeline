@@ -12,7 +12,7 @@ import { LogOut } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 
 type UserDropdownProps = {
-  user?: SessionUser;
+  user: UserProfile | null;
 };
 
 export const UserDropdown = ({ user }: UserDropdownProps) => {

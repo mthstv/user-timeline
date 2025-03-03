@@ -1,7 +1,7 @@
 import NextAuth, { Session, User } from 'next-auth';
 import Credentials from "next-auth/providers/credentials"
 import { jwtDecode } from 'jwt-decode';
-import { getProfile, login } from '@/services/auth';
+import { login } from '@/services/auth';
 
 interface DecodedToken {
   sub: string;
@@ -12,20 +12,12 @@ interface DecodedToken {
 
 interface CustomUser extends User {
   accessToken?: string;
-  username?: string;
-  displayName?: string | null;
-  avatar?: string;
-  bio?: string;
 }
 
 interface CustomSession extends Session {
   accessToken?: string;
   user: {
     id?: string;
-    username?: string;
-    displayName?: string | null;
-    avatar?: string;
-    bio?: string;
   }
 }
 
@@ -45,16 +37,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const decodedToken = jwtDecode<DecodedToken>(user.access_token);
         const userId = decodedToken.sub;
 
-        const profile = await getProfile(user.access_token);
-
         if (user) {
           return {
             id: userId,
             email: credentials?.email as string,
-            username: profile.username,
-            displayName: profile.displayName,
-            avatar: profile.avatar,
-            bio: profile.bio,
             accessToken: user.access_token,
           };
         }
@@ -73,10 +59,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.maxAge = 3600;
         token.exp = Math.floor(Date.now() / 1000) + 3600;
         token.id = user.id;
-        token.username = user.username;
-        token.displayName = user.displayName;
-        token.avatar = user.avatar;
-        token.bio = user.bio;
       }
       return token;
     },
@@ -84,10 +66,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.accessToken = token.accessToken;
       session.user = {
         id: token.id,
-        username: token.username,
-        displayName: token.displayName,
-        avatar: token.avatar,
-        bio: token.bio,
       }
       return session;
     },
