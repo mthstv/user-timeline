@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Avatar } from '../ui/avatar';
+import { Avatar } from '../../ui/avatar';
 
 type ProfileTooltipProps = {
   children: React.ReactNode;
