@@ -1,5 +1,3 @@
-'use client';
-
 import { SignupForm } from '@/components/pages/signup/signup-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 

@@ -23,6 +23,7 @@ export async function login(email?: string, password?: string) {
 }
 
 export async function getProfile(accessToken: string) {
+  // const session = await auth();
   const { data } = await profilesAPI.get(`/profiles/auth`, {
     headers: {
       Authorization: `Bearer ${accessToken}`
@@ -52,7 +53,6 @@ export async function register({email, password, username, displayName}: SignupD
 }
 
 export const handleSignIn = async ({ email, password }: { email?: string; password?: string }) => {
-  const session = await auth();
   await signIn('credentials', {
     email,
     password,

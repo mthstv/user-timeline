@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { getUserSession } from '@/services/auth';
 import { Menu } from 'lucide-react';
 import { Session } from 'next-auth';
+import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type DashboardLayoutProps = {
@@ -21,6 +22,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   useEffect(() => {
     const fetchSession = async () => {
       const authSession = await getUserSession();
+      if (!authSession) redirect('/auth/login');
       setSession(authSession);
     };
 

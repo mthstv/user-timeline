@@ -70,6 +70,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }: { token: any; user: CustomUser }) {
       if (user) {
         token.accessToken = user.accessToken;
+        token.maxAge = 3600;
+        token.exp = Math.floor(Date.now() / 1000) + 3600;
         token.id = user.id;
         token.username = user.username;
         token.displayName = user.displayName;
@@ -93,6 +95,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 172800,
+    maxAge: 3600,
   },
 });

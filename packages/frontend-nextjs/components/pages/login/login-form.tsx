@@ -4,18 +4,13 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
 import { handleSignIn } from '@/services/auth';
 
 export const LoginForm = () => {
   const { register, handleSubmit } = useForm();
 
-  const { mutate: handleLogin } = useMutation({
-    mutationFn: handleSignIn,
-  });
-
   const onSubmit = (data: SigninDto) => {
-    handleLogin(data);
+    handleSignIn(data);
   };
 
   return (
