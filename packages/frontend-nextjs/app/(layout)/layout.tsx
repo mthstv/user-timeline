@@ -11,7 +11,7 @@ import { getUserSession } from '@/services/auth';
 import { useQuery } from '@tanstack/react-query';
 import { Menu } from 'lucide-react';
 import { Session } from 'next-auth';
-import { redirect } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import { useState } from 'react';
 
 type DashboardLayoutProps = {
@@ -25,7 +25,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const fetchSession = async () => {
     const authSession = await getUserSession();
-    if (!authSession) redirect('/auth/login');
+    if (!authSession) signOut({ callbackUrl: '/auth/login' });
     setSession(authSession);
     loadProfile();
     return authSession;
