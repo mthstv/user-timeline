@@ -21,42 +21,89 @@ export class PostsService {
     return this.postsRepository.save(newPost);
   }
 
-  findAll(): Promise<Post[]> {
-    return this.postsRepository
+  async findAll(authUserId: string): Promise<Post[]> {
+    return await this.postsRepository
       .createQueryBuilder('post')
       .leftJoin('post.likes', 'like')
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
+      .addSelect((qb) =>
+        qb
+          .select('COUNT(likes.id)', 'hasLiked')
+          .from('like', 'likes')
+          .where('likes.postId = post.id')
+          .andWhere('likes.userId = :userId', { userId: authUserId })
+      , 'hasLiked')
       .orderBy('post.createdAt', 'DESC')
-      .getMany();
+      .getRawAndEntities()
+      .then(({ entities, raw }) => (
+        entities.map((post, index) => ({
+          ...post,
+          hasLiked: Boolean(Number(raw[index].hasLiked)),
+      }))));
   }
 
-  findOne(id: string) {
-    return this.postsRepository
-      .createQueryBuilder('post')
-      .where('post.id = :id', { id })
-      .leftJoin('post.likes', 'like')
-      .loadRelationCountAndMap('post.likesCount', 'post.likes')
-      .getOne();
-  }
-
-  findByUserId(userId: string) {
-    return this.postsRepository
+  async findByUserId(userId: string, authUserId: string) {
+    return await this.postsRepository
       .createQueryBuilder('post')
       .where('post.createdBy = :userId', { userId })
       .leftJoin('post.likes', 'like')
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
+      .addSelect((qb) =>
+        qb
+          .select('COUNT(likes.id)', 'hasLiked')
+          .from('like', 'likes')
+          .where('likes.postId = post.id')
+          .andWhere('likes.userId = :userId', { userId: authUserId })
+      , 'hasLiked')
       .orderBy('post.createdAt', 'DESC')
-      .getMany();
+      .getRawAndEntities()
+      .then(({ entities, raw }) =>
+        (entities.map((post, index) => ({
+          ...post,
+          hasLiked: Boolean(Number(raw[index].hasLiked)),
+      }))));
   }
 
-  findByUserLikes(userId: string) {
-    return this.postsRepository
+  async findOne(id: string, authUserId: string) {
+    return await this.postsRepository
+      .createQueryBuilder('post')
+      .where('post.id = :id', { id })
+      .leftJoin('post.likes', 'like')
+      .loadRelationCountAndMap('post.likesCount', 'post.likes')
+      .addSelect((qb) =>
+        qb
+          .select('COUNT(likes.id)', 'hasLiked')
+          .from('like', 'likes')
+          .where('likes.postId = post.id')
+          .andWhere('likes.userId = :userId', { userId: authUserId })
+        , 'hasLiked')
+      .getRawAndEntities()
+      .then(({ entities, raw }) => ({
+          ...entities[0],
+          hasLiked: Boolean(Number(raw[0].hasLiked)),
+      }));
+  }
+
+  async findByUserLikes(userId: string, authUserId: string) {
+    return await this.postsRepository
       .createQueryBuilder('post')
       .leftJoin('post.likes', 'like')
       .where('like.userId = :userId', { userId })
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
+      .addSelect((qb) =>
+        qb
+          .select('COUNT(likes.id)', 'hasLiked')
+          .from('like', 'likes')
+          .where('likes.postId = post.id')
+          .andWhere('likes.userId = :userId', { userId: authUserId })
+      , 'hasLiked')
       .orderBy('post.createdAt', 'DESC')
-      .getMany();
+      .getRawAndEntities()
+      .then(({ entities, raw }) => {
+        return entities.map((post, index) => ({
+          ...post,
+          hasLiked: Boolean(Number(raw[index].hasLiked)),
+      }))});
   }
 
   async update(id: string, createdBy: string, updatePostDto: UpdatePostDto) {

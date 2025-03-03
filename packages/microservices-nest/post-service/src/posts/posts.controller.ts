@@ -44,28 +44,28 @@ export class PostsController {
   }
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findAll(@Request() req: { user: AuthUserDto }) {
+    return this.postsService.findAll(req.user?.sub);
   }
 
   @Get('/user/auth')
   findByAuthUser(@Request() req: { user: AuthUserDto }) {
-    return this.postsService.findByUserId(req.user?.sub);
+    return this.postsService.findByUserId(req.user?.sub, req.user?.sub);
   }
 
   @Get('/user/:userId')
-  findByUserId(@Param('userId') userId: string) {
-    return this.postsService.findByUserId(userId);
+  findByUserId(@Request() req: { user: AuthUserDto }, @Param('userId') userId: string) {
+    return this.postsService.findByUserId(userId, req.user?.sub);
   }
 
   @Get('/liked/auth')
   findByLikes(@Request() req: { user: AuthUserDto }) {
-    return this.postsService.findByUserLikes(req.user?.sub);
+    return this.postsService.findByUserLikes(req.user?.sub, req.user?.sub);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(id);
+  findOne(@Request() req: { user: AuthUserDto }, @Param('id') id: string) {
+    return this.postsService.findOne(id, req.user?.sub);
   }
 
   @Patch(':id')
