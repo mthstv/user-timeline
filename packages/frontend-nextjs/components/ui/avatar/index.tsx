@@ -9,7 +9,7 @@ type AvatarProps = {
 export const Avatar = ({ user, size = 9 }: AvatarProps) => {
   return (
     <AvatarRoot className={cn(`w-${size} h-${size}`, 'block')}>
-      <AvatarImage src={user?.avatar ?? ''} />
+      <AvatarImage src={user?.avatar || undefined} />
       <AvatarFallback>{user?.initials}</AvatarFallback>
     </AvatarRoot>
   );
