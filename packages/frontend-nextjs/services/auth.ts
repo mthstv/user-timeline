@@ -41,15 +41,22 @@ export async function register({email, password, username, displayName}: SignupD
   const { data } = await authAPI.post('/auth/signup', {
     email,
     password,
+  });
+
+  const { data: profileData} = await profilesAPI.post('/profiles', {
     username,
     displayName
-  });
+  }, {
+    headers: {
+      Authorization: `Bearer ${data.access_token}`
+    }
+  })
 
   if (data.error) {
     throw new Error(data.error);
   }
 
-  return data;
+  return { ...data, ...profileData };
 }
 
 export const handleSignIn = async ({ email, password }: { email?: string; password?: string }) => {
