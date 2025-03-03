@@ -58,6 +58,11 @@ export class PostsController {
     return this.postsService.findByUserId(userId);
   }
 
+  @Get('/liked/auth')
+  findByLikes(@Request() req: { user: AuthUserDto }) {
+    return this.postsService.findByUserLikes(req.user?.sub);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.postsService.findOne(id);
