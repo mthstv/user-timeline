@@ -28,7 +28,7 @@ export async function register({email, password, username, displayName}: SignupD
     password,
   });
 
-  const { data: profileData} = await createProfile({ username, displayName })
+  const { data: profileData} = await createProfile({ username, displayName, accessToken: data.access_token });
 
   if (data.error) {
     throw new Error(data.error);
