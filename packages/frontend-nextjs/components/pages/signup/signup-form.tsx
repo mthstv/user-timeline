@@ -14,19 +14,15 @@ export const SignupForm = () => {
     handleSubmit,
     watch,
     formState: { errors },
-    getValues,
   } = useForm();
 
-  const { mutate: handleSignup } = useMutation({
+  const { mutateAsync: handleSignup } = useMutation({
     mutationFn: registerUser,
-    onSuccess: async () => {
-      const data = getValues();
-      await handleSignIn(data);
-    },
   });
 
-  const onSubmit = (data: SignupDto) => {
-    handleSignup(data);
+  const onSubmit = async (data: SignupDto) => {
+    await handleSignup(data);
+    await handleSignIn(data);
   };
 
   return (
