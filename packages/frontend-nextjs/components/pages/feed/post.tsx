@@ -1,6 +1,6 @@
 'use client';
 
-import { ProfileTooltip } from '@/components/shared/profile-tooltip';
+import { ProfileTooltip } from '@/components/pages/feed/profile-tooltip';
 import { Avatar } from '@/components/ui/avatar';
 import {
   Card,
