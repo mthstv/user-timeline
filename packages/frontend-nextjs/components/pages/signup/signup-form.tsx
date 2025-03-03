@@ -17,15 +17,11 @@ export const SignupForm = () => {
     getValues,
   } = useForm();
 
-  const { mutate: handleLogin } = useMutation({
-    mutationFn: handleSignIn,
-  });
-
   const { mutate: handleSignup } = useMutation({
     mutationFn: registerUser,
-    onSuccess: () => {
+    onSuccess: async () => {
       const data = getValues();
-      handleLogin(data as any);
+      await handleSignIn(data);
     },
   });
 
