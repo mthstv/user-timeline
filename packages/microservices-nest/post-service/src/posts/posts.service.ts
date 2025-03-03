@@ -26,6 +26,7 @@ export class PostsService {
       .createQueryBuilder('post')
       .leftJoin('post.likes', 'like')
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
+      .orderBy('post.createdAt', 'DESC')
       .getMany();
   }
 
@@ -44,6 +45,17 @@ export class PostsService {
       .where('post.createdBy = :userId', { userId })
       .leftJoin('post.likes', 'like')
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
+      .orderBy('post.createdAt', 'DESC')
+      .getMany();
+  }
+
+  findByUserLikes(userId: string) {
+    return this.postsRepository
+      .createQueryBuilder('post')
+      .leftJoin('post.likes', 'like')
+      .where('like.userId = :userId', { userId })
+      .loadRelationCountAndMap('post.likesCount', 'post.likes')
+      .orderBy('post.createdAt', 'DESC')
       .getMany();
   }
 
