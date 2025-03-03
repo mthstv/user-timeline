@@ -5,29 +5,30 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { EditProfileDialog } from '../edit-profile-dialog';
 import { DeleteProfileDialog } from '../delete-profile-dialog';
+import { useProfile } from '@/context/profile-context';
 
-type ProfileDataProps = {
-  user: Record<string, string | null>;
-};
-
-export const ProfileData = ({ user }: ProfileDataProps) => {
+export const ProfileData = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const { profile } = useProfile();
 
   return (
     <main className="flex flex-col gap-4">
       <div className="flex gap-4 items-end">
         <div className="h-28 w-28 rounded-full border border-muted-foreground flex items-center justify-center bg-secondary z-10">
-          {user.avatar ? (
+          {profile?.avatar ? (
             <Image
               alt="user profile image"
               className="rounded-full z-0"
-              src={user.avatar}
+              src={profile?.avatar}
               width={112}
               height={112}
             />
           ) : (
-            <p className="text-3xl text-muted-foreground">JD</p>
+            <span className="text-3xl text-muted-foreground">
+              {profile?.initials}
+            </span>
           )}
         </div>
         <div className="ml-auto"></div>
@@ -39,16 +40,20 @@ export const ProfileData = ({ user }: ProfileDataProps) => {
         </Button>
       </div>
       <div>
-        <h2 className="text-xl">{user.name}</h2>
-        <span className="text-lg text-muted-foreground">@{user.username}</span>
-        <p className="my-2">{user.bio}</p>
+        <h2 className="text-xl">{profile?.displayName}</h2>
+        <span className="text-lg text-muted-foreground">
+          @{profile?.username}
+        </span>
+        <p className="my-2">{profile?.bio}</p>
       </div>
 
-      <EditProfileDialog
-        user={user}
-        open={showEditModal}
-        setOpen={setShowEditModal}
-      />
+      {profile && (
+        <EditProfileDialog
+          profile={profile}
+          open={showEditModal}
+          setOpen={setShowEditModal}
+        />
+      )}
 
       <DeleteProfileDialog
         open={showDeleteModal}

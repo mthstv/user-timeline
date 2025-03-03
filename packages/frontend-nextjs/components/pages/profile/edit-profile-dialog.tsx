@@ -2,20 +2,45 @@ import { Button } from '@/components/ui/button';
 import { Dialog } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { updateProfile } from '@/services/profile';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AtSign } from 'lucide-react';
 import Image from 'next/image';
+import { useForm } from 'react-hook-form';
 
 type EditProfileDialogProps = {
-  user: Record<string, string | null>;
+  profile: UserProfile | null;
   open: boolean;
   setOpen: (open: boolean) => void;
 };
 
 export const EditProfileDialog = ({
-  user,
+  profile,
   open,
   setOpen,
 }: EditProfileDialogProps) => {
+  const queryClient = useQueryClient();
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      avatar: profile?.avatar,
+      displayName: profile?.displayName,
+      username: profile?.username,
+      bio: profile?.bio,
+    },
+  });
+
+  const { mutateAsync: handleUpdateProfile, isPending } = useMutation({
+    mutationFn: updateProfile,
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ['session'] });
+    },
+  });
+
+  const onSubmit = async (data: UserProfile) => {
+    await handleUpdateProfile(data);
+    setOpen(false);
+  };
+
   return (
     <Dialog
       open={open}
@@ -23,20 +48,22 @@ export const EditProfileDialog = ({
       title="Edit profile"
       description="Change your profile as you like!"
       content={
-        <main className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-4">
             <div className="flex flex-col gap-4 justify-start items-center">
               <div className="h-28 w-28 rounded-full border border-muted-foreground flex items-center justify-center bg-secondary z-10">
-                {user.avatar ? (
+                {profile?.avatar ? (
                   <Image
                     alt="user profile image"
                     className="rounded-full z-0"
-                    src={user.avatar}
+                    src={profile.avatar}
                     width={112}
                     height={112}
                   />
                 ) : (
-                  <p className="text-3xl text-muted-foreground">JD</p>
+                  <span className="text-3xl text-muted-foreground">
+                    {profile?.initials}
+                  </span>
                 )}
               </div>
             </div>
@@ -51,7 +78,7 @@ export const EditProfileDialog = ({
                 <Input
                   placeholder="https://..."
                   id="avatar"
-                  value={user.avatar || ''}
+                  {...register('avatar')}
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -61,7 +88,7 @@ export const EditProfileDialog = ({
                 >
                   Name
                 </label>
-                <Input id="name" value={user.name || ''} />
+                <Input id="name" {...register('displayName')} />
               </div>
 
               <div className="flex flex-col gap-2">
@@ -78,7 +105,7 @@ export const EditProfileDialog = ({
                   <Input
                     className="rounded-l-none"
                     id="username"
-                    value={user.username || ''}
+                    {...register('username')}
                   />
                 </div>
               </div>
@@ -91,10 +118,10 @@ export const EditProfileDialog = ({
             >
               Bio
             </label>
-            <Textarea id="bio" value={user.bio || ''} />
+            <Textarea id="bio" {...register('bio')} />
           </div>
-          <Button onClick={() => setOpen(false)}>Salvar</Button>
-        </main>
+          <Button type="submit">Salvar</Button>
+        </form>
       }
     />
   );

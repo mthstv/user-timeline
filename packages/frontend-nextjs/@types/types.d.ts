@@ -11,13 +11,15 @@ type SigninDto = {
   password?: string;
 }
 
-type SessionUser = {
-  id?: string;
-  email?: string | null
+type UserProfile = {
   username?: string;
   displayName?: string;
+  bio?: string;
   avatar?: string;
+  initials?: string;
+};
+
+type SessionUser = {
+  id?: string;
   accessToken?: string;
-  name?: string | null
-  image?: string | null
 }

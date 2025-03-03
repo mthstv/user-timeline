@@ -2,7 +2,7 @@
 
 import { auth, signIn } from '@/lib/auth';
 import { authAPI } from '../lib/axios';
-import { profilesAPI } from '../lib/axios';
+import { createProfile } from './profile';
 
 export const getUserSession = async () => {
   const session = await auth();
@@ -22,35 +22,13 @@ export async function login(email?: string, password?: string) {
   return data;
 }
 
-export async function getProfile(accessToken: string) {
-  // const session = await auth();
-  const { data } = await profilesAPI.get(`/profiles/auth`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`
-    }
-  });
-
-  if (data.error) {
-    throw new Error(data.error);
-  }
-
-  return data;
-}
-
 export async function register({email, password, username, displayName}: SignupDto) {
   const { data } = await authAPI.post('/auth/signup', {
     email,
     password,
   });
 
-  const { data: profileData} = await profilesAPI.post('/profiles', {
-    username,
-    displayName
-  }, {
-    headers: {
-      Authorization: `Bearer ${data.access_token}`
-    }
-  })
+  const { data: profileData} = await createProfile({ username, displayName })
 
   if (data.error) {
     throw new Error(data.error);

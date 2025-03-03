@@ -3,7 +3,7 @@
 import { ThemeProvider } from './theme-provider';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useTanstackQuery } from '@/lib/tanstack-query';
-import { SessionProvider } from 'next-auth/react';
+import { ProfileProvider } from '@/context/profile-context';
 
 type ClientProvidersProps = {
   children: React.ReactNode;
@@ -20,7 +20,7 @@ export const ClientProviders = ({ children }: ClientProvidersProps) => {
         enableSystem
         disableTransitionOnChange
       >
-        {children}
+        <ProfileProvider>{children}</ProfileProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

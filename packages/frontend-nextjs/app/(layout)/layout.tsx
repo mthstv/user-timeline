@@ -4,12 +4,15 @@ import { NavItems } from '@/components/pages/sidebar/nav-items';
 import { UserDropdown } from '@/components/pages/sidebar/user-dropdown';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useProfile } from '@/context/profile-context';
 import { cn } from '@/lib/utils';
 import { getUserSession } from '@/services/auth';
+import { useQuery } from '@tanstack/react-query';
 import { Menu } from 'lucide-react';
 import { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -18,16 +21,20 @@ type DashboardLayoutProps = {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [session, setSession] = useState<Session | null>(null);
+  const { profile, loadProfile } = useProfile();
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      const authSession = await getUserSession();
-      if (!authSession) redirect('/auth/login');
-      setSession(authSession);
-    };
+  const fetchSession = async () => {
+    const authSession = await getUserSession();
+    if (!authSession) redirect('/auth/login');
+    setSession(authSession);
+    loadProfile();
+    return authSession;
+  };
 
-    fetchSession();
-  }, []);
+  const { isLoading } = useQuery({
+    queryKey: ['session'],
+    queryFn: fetchSession,
+  });
 
   return (
     <div className="w-full h-screen overflow-hidden lg:grid lg:grid-cols-[300px,1fr] relative">
@@ -52,7 +59,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
         <NavItems />
         <div className="w-full mt-auto border-t border-muted px-3 py-4 flex items-center justify-between gap-2">
-          <UserDropdown user={session?.user} />
+          {isLoading ? (
+            <Skeleton className="h-4 w-[250px]" />
+          ) : (
+            <UserDropdown user={profile} />
+          )}
+
           <ThemeToggle />
         </div>
       </aside>
