@@ -1,5 +1,6 @@
 import { getProfile } from '@/services/profile';
 import { createContext, useContext, useState, ReactNode } from 'react';
+import { toast } from 'sonner';
 
 type ProfileContextType = {
   profile: UserProfile | null;
@@ -17,7 +18,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
       const profile = await getProfile();
       setProfile(profile);
     } catch (error) {
-      console.error('Failed to load user profile:', error);
+      toast.error('Failed to load user profile.');
       setProfile(null);
     }
   }

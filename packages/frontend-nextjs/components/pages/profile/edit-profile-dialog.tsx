@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AtSign } from 'lucide-react';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 type EditProfileDialogProps = {
   profile: UserProfile | null;
@@ -33,6 +34,10 @@ export const EditProfileDialog = ({
     mutationFn: updateProfile,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ['session'] });
+      toast.success('Profile updated successfully.');
+    },
+    onError() {
+      toast.error('An error occoured while trying to edit your profile.');
     },
   });
 

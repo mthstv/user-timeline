@@ -7,6 +7,7 @@ import { useProfile } from '@/context/profile-context';
 import { createPost } from '@/services/posts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 export const NewPostForm = () => {
   const { profile } = useProfile();
@@ -17,6 +18,7 @@ export const NewPostForm = () => {
     mutationFn: createPost,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ['all-posts'] });
+      toast.success('Post created successfully');
     },
   });
 

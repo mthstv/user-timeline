@@ -5,6 +5,7 @@ import { removeAuthPosts } from '@/services/posts';
 import { removeAuthProfile } from '@/services/profile';
 import { useMutation } from '@tanstack/react-query';
 import { signOut } from 'next-auth/react';
+import { toast } from 'sonner';
 
 type DeleteProfileDialogProps = {
   open: boolean;
@@ -17,11 +18,13 @@ export const DeleteProfileDialog = ({
 }: DeleteProfileDialogProps) => {
   const deleteEntities = async () => {
     try {
+      toast.loading('Deleting profile...');
       await removeAuthPosts();
       await removeAuthProfile();
       await removeAuthUser();
     } catch (error) {
       console.error(error);
+      toast.error('An error occoured while deleting the profile.');
     }
   };
 

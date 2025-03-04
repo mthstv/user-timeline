@@ -35,10 +35,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         try {
           const user = await login(credentials?.email as string, credentials?.password as string);
-          const decodedToken = jwtDecode<DecodedToken>(user.access_token);
-          const userId = decodedToken.sub;
 
           if (user) {
+            const decodedToken = jwtDecode<DecodedToken>(user.access_token);
+            const userId = decodedToken.sub;
             return {
               id: userId,
               email: credentials?.email as string,
@@ -48,7 +48,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           return null;
         } catch (error) {
-          console.error(error);
           return null;
         }
       },
