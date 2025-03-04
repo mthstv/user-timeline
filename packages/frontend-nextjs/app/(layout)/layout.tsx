@@ -65,7 +65,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <UserDropdown user={profile} />
           )}
 
-          <ThemeToggle />
+          <div className="ml-auto">
+            <ThemeToggle />
+          </div>
         </div>
       </aside>
 

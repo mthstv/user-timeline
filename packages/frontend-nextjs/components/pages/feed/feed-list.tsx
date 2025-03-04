@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getAllPosts, getAuthPosts, getLikedPosts } from '@/services/posts';
 import { getProfileByUser } from '@/services/profile';
+import { Skeleton } from '@/components/ui/skeleton';
+import { SkeletonPost } from './skeleton-post-loading';
 
 type FeedListProps = {
   limitBy?: 'own-posts' | 'liked-posts';
@@ -41,13 +43,27 @@ export const FeedList = ({ limitBy }: FeedListProps) => {
     return postsWithProfile;
   };
 
-  const { isLoading } = useQuery({
+  const { isFetching } = useQuery({
     queryKey: [`${limitBy ?? 'all-posts'}`],
     queryFn: fetchPostsWithProfile,
   });
 
   return (
     <div className="flex flex-col gap-4 mb-8">
+      {isFetching && (
+        <>
+          <SkeletonPost />
+          <SkeletonPost />
+          <SkeletonPost />
+        </>
+      )}
+      {!isFetching && posts.length === 0 && (
+        <div className="p-8 text-center">
+          <h1 className="text-2xl">Nothing to see here 👀</h1>
+          <p className="text-muted-foreground">Go ahead and start posting!</p>
+        </div>
+      )}
+
       {posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
