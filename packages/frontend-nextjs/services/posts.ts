@@ -4,8 +4,8 @@ import { auth } from "@/lib/auth";
 import { postsAPI } from "@/lib/axios";
 
 export async function getAllPosts() {
-  const session = await auth() as SessionUser;
   try {
+    const session = await auth() as SessionUser;
     const { data } = await postsAPI.get(`/posts`, {
       headers: {
         Authorization: `Bearer ${session?.accessToken}`
@@ -18,14 +18,13 @@ export async function getAllPosts() {
 
     return data;
   } catch (error) {
-    console.error(error);
-    return [];
+    console.error(error)
   }
 }
 
 export async function getAuthPosts() {
-  const session = await auth() as SessionUser;
   try {
+    const session = await auth() as SessionUser;
     const { data } = await postsAPI.get(`/posts/user/auth`, {
       headers: {
         Authorization: `Bearer ${session?.accessToken}`
@@ -38,14 +37,13 @@ export async function getAuthPosts() {
     
     return data;
   } catch (error) {
-    console.error(error);
-    return [];
+    console.error(error)
   }
 }
 
 export async function getLikedPosts() {
-  const session = await auth() as SessionUser;
   try {
+    const session = await auth() as SessionUser;
     const { data } = await postsAPI.get(`/posts/liked/auth`, {
       headers: {
         Authorization: `Bearer ${session?.accessToken}`
@@ -58,41 +56,48 @@ export async function getLikedPosts() {
     
     return data;
   } catch (error) {
-    console.error(error);
-    return [];
+    console.error(error)
   }
 }
 
 export async function likePost(
   { id }: UserPost
 ) {
-  const session = await auth() as SessionUser;
+  try {
+    const session = await auth() as SessionUser;
 
-  const { data } = await postsAPI.post('/posts/like', {
-    postId: id
-  }, {
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    }
-  })
+    const { data } = await postsAPI.post('/posts/like', {
+      postId: id
+    }, {
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`
+      }
+    })
 
-  return data;
+    return data;
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export async function createPost(
   { content }: UserPost
 ) {
-  const session = await auth() as SessionUser;
+  try {
+    const session = await auth() as SessionUser;
 
-  const { data } = await postsAPI.post('/posts', {
-    content
-  }, {
-    headers: {
-      Authorization: `Bearer ${session?.accessToken}`
-    }
-  })
+    const { data } = await postsAPI.post('/posts', {
+      content
+    }, {
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`
+      }
+    })
 
-  return data;
+    return data;
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 
@@ -112,7 +117,6 @@ export async function removeAuthPosts() {
     
     return data;
   } catch (error) {
-    console.error(error);
-    return [];
+    console.error(error)
   }
 }

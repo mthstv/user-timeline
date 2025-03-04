@@ -99,11 +99,10 @@ Utilizei o [React Hook Form](https://www.react-hook-form.com/) para validação 
 - RabbitMQ para replicar dados do perfil do usuário dentro dos posts, com a atualização do usuário o perfil no post é atualizado e mantém a consistencia de dados.
 - Websocket para manter o feed atualizado
 - Paginação
-- Swagger nos outros microsserviços
 - Dynamic import components
 - Deletar perfil
 - Try catches no front e back para evitar erros
 - Cache redis
-- Otimizar consultas
-- Service workers para aplicação funcionar offline
 - Monitoramento e logs com ELK Stack
+- Testes unitários e de integração
+- Validações de formulário (Yup)

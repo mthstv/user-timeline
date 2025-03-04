@@ -5,12 +5,27 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { handleSignIn } from '@/services/auth';
+import { toast } from 'sonner';
+import { useMutation } from '@tanstack/react-query';
+import { redirect } from 'next/navigation';
 
 export const LoginForm = () => {
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data: SigninDto) => {
-    handleSignIn(data);
+  const { mutateAsync: handleSignInUser } = useMutation({
+    mutationFn: handleSignIn,
+    onSuccess: () => {
+      toast.success('Logged in successfully');
+    },
+    onError: () => {
+      toast.error('E-mail or password are incorrect');
+    },
+  });
+
+  const onSubmit = async (data: SigninDto) => {
+    await handleSignInUser(data);
+
+    redirect('/feed');
   };
 
   return (

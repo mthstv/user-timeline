@@ -7,6 +7,8 @@ import { AtSign } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { handleSignIn, register as registerUser } from '@/services/auth';
+import { redirect } from 'next/navigation';
+import { toast } from 'sonner';
 
 export const SignupForm = () => {
   const {
@@ -20,9 +22,21 @@ export const SignupForm = () => {
     mutationFn: registerUser,
   });
 
+  const { mutateAsync: handleSignInUser } = useMutation({
+    mutationFn: handleSignIn,
+    onSuccess: () => {
+      toast.success('Signed up successfully');
+    },
+    onError: () => {
+      toast.error('Error while trying to sign up');
+    },
+  });
+
   const onSubmit = async (data: SignupDto) => {
     await handleSignup(data);
-    await handleSignIn(data);
+    await handleSignInUser(data);
+
+    redirect('/feed');
   };
 
   return (

@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { LogOut } from 'lucide-react';
 import { signOut } from 'next-auth/react';
+import { toast } from 'sonner';
 
 type UserDropdownProps = {
   user: UserProfile | null;
@@ -17,6 +18,11 @@ type UserDropdownProps = {
 
 export const UserDropdown = ({ user }: UserDropdownProps) => {
   if (!user) return null;
+
+  const handleSignout = async () => {
+    toast.loading('Signing out...');
+    await signOut({ callbackUrl: '/auth/login' });
+  };
 
   return (
     <DropdownMenu>
@@ -32,7 +38,7 @@ export const UserDropdown = ({ user }: UserDropdownProps) => {
       >
         <DropdownMenuItem
           className="gap-2 text-red-500"
-          onClick={() => signOut({ callbackUrl: '/auth/login' })}
+          onClick={handleSignout}
         >
           <LogOut size={16} />
           Sair
