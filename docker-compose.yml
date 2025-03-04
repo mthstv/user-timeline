@@ -1,10 +1,11 @@
-version: "3.8"
+version: '3.8'
 
 volumes:
   postgres_local_data:
 
 services:
   db:
+    container_name: postgres-timeline
     image: postgres
     restart: always
     environment:
@@ -15,8 +16,9 @@ services:
       - 5432:5432
     volumes:
       - postgres_local_data:/var/lib/postgresql/data
-
+      - ./scripts/create-db.sql:/create_database.sql
   adminer:
+    container_name: adminer-timeline
     image: adminer
     restart: always
     ports:

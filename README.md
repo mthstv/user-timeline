@@ -1,108 +1,109 @@
-# Challenge for developers - Technical Assessment
+# User Timeline
 
-## Descrição Geral
+Esse projeto é um desafio realizado em Nextjs e Microsserviços Nestjs. O Objetivo era criar uma Timeline em que usuários possam postar e reagir as postagens.
+O usuário pode também gerenciar seu perfil como desejar.
 
-Este repositório contém um desafio técnico para desenvolvedores de diferentes níveis (Júnior, Pleno e Sênior). O objetivo é construir uma aplicação de perfil de usuário com uma timeline (feed) onde os usuários possam criar postagens e interagir com reações, como curtidas. O desafio está estruturado em diferentes níveis de complexidade, permitindo avaliar habilidades em desenvolvimento frontend e backend.
+![Peview 1](docs/preview-1.png)
 
-## Estrutura do Repositório
+### Requisitos
 
-O repositório está organizado como um monorepo, com múltiplos diretórios correspondentes a diferentes partes do sistema, incluindo tanto APIs quanto interfaces de usuário. Abaixo está uma explicação detalhada sobre cada diretório e sua finalidade:
+- Node v20.11.1
+- Yarn
+- Docker
+
+## Rodando o projeto
+
+O projeto está estruturado em workspaces, portanto, os comandos abaixo serão executados na raiz do projeto.
+
+Para o banco de dados eu coloquei no projeto um docker-compose.yml que roda o postgres localmente e o Adminer para gerar uma GUI de gerenciamento de banco de dados.
+
+1. Rode o docker compose para subir o banco de dados:
 
 ```
-user-profile-app/
-├── README.md
-├── packages/
-│   ├── monolith-sample/      # Monolito Quick Start em Node.js (Iniciado)
-│   ├── monolith-node/        # Monolito em Node.js (Iniciado)
-│   ├── api-node/             # API em Node.js (Iniciado)
-│   ├── api-go/               # API em Go (Iniciado)
-│   ├── microservices-go/     # Microserviços em Go (Diretórios Vazios)
-│   ├── frontend-react/       # Frontend em React (Pacote Inicial Criado)
-│   ├── frontend-nextjs/      # Frontend em Next.js (Pacote Inicial Criado)
-├── package.json
-└── .gitignore
+docker compose up -d
 ```
 
-## Níveis de Experiência
+2. Em seguida, rode o seguinte comando para criar as bases de dados no banco postgres:
 
-### Nível Júnior
+```
+docker exec -it postgres-timeline psql -U postgres -a -f create_database.sql
+```
 
-#### Requisitos Mínimos
-- **API RESTful:** Implementar um monolito em Node.js ou uma API RESTful em Node.js ou Go para gerenciamento de perfis de usuário.
-  - Operações CRUD (Create, Read, Update, Delete) para os perfis.
-  - Endpoint para criação de postagens na timeline.
-  - Endpoint para reagir a postagens com curtidas.
-- **Frontend Básico:** Utilizar React ou Next.js para criar uma tela de perfil e uma timeline de postagens.
-  - Exibir postagens na timeline com a capacidade de adicionar novas postagens e curtir.
-- **Autenticação:** Implementar autenticação utilizando JWT.
-- **Testes Unitários:** Criar testes unitários para os principais endpoints da API.
-- **Documentação:** Documentar a API utilizando Swagger ou uma ferramenta similar.
+3. Com o banco rodando e os bancos de cada microsserviço criados, podemos iniciar a configuração inicial do ambiente de desenvolvimento.
 
-#### Implementação Inicial (monolith-sample)
-- O diretório `monolith-sample/` já contém uma implementação básica em Node.js e React.
-- **Dependências**: O projeto foi configurado para rodar com Node.js e SQLite.
-- **Instruções de Uso**: 
-  - Para rodar o projeto, utilize os scripts:
-    ```bash
-    cd packages/monolith-sample
-    npm run install:all
-    npm run dev
-    ```
+   Este comando irá instalar as dependencias do backend e do frontend, copiar os arquivos de ambiente e rodar as migrations no banco de dados:
 
-### Nível Pleno
+```
+yarn setup
+```
 
-#### Requisitos Adicionais
-- **Frontend Avançado:** Migrar o frontend para Next.js (caso tenha escolhido React no nível Júnior).
-  - Implementar uma interface de usuário mais rica e responsiva.
-- **Banco de Dados:** Integração com um banco de dados relacional (ex: PostgreSQL).
-  - Persistir dados de usuários, postagens e reações (curtidas).
-- **Cache:** Implementar cache utilizando Redis para melhorar a performance das operações de leitura.
-- **Testes de Integração:** Criar testes de integração para validar o fluxo completo da aplicação.
+4. Para subir o backend, rode o comando:
 
-#### Implementação Inicial
-- O diretório `frontend-nextjs/` já contém um pacote inicial criado com `create-next-app`, pronto para ser expandido.
-- **Expectativas**:
-  - Otimizar a aplicação para usar um banco de dados relacional e implementar as funcionalidades adicionais conforme descrito nos requisitos.
+```
+yarn start:microservices
+```
 
-### Nível Sênior
+5. Para subir o front, rode o comando:
 
-#### Requisitos Adicionais
-- **Escalabilidade e Performance:** Otimizar a aplicação para suportar um grande volume de postagens e curtidas simultâneas.
-  - Implementar concorrência utilizando Golang para processos críticos de performance (caso escolha Go).
-- **WebSocket:** Implementar WebSocket para atualizações em tempo real na timeline.
-- **Funcionalidade Offline:** Permitir que a aplicação funcione offline utilizando Service Workers.
-- **Monitoramento e Logs:** Configurar monitoramento e logging para a aplicação utilizando ferramentas como ELK Stack (Elasticsearch, Logstash, Kibana).
-- **Microsserviços:** Refatorar parte da aplicação para uma arquitetura de microsserviços, separando responsabilidades (ex: serviço de autenticação, serviço de perfis, serviço de postagens).
+```
+yarn start:web
+```
 
-#### Implementação Inicial
-- Os diretórios `microservices-go/` (`auth-service`, `post-service`, `profile-service`) foram criados, mas estão vazios. Esses diretórios servem como base para implementação de uma arquitetura de microsserviços, onde cada serviço é responsável por uma parte específica da aplicação.
-- **Expectativas**:
-  - Implementar toda a estrutura de microsserviços, utilizando Golang, com foco em escalabilidade e performance.
+## Documentação APIs
 
-## Instruções de Entrega
+Atualmente configurei o Swagger somente na API de Auth, acessando essa URL com o projeto em execução: http://localhost:3000/api
 
-1. **Repositório Git:** Submeta o código em um repositório Git. Pode ser público ou privado (forneça acesso se for privado).
-2. **Branches:** Crie uma branch específica para cada nível (junior, pleno, senior). Certifique-se de que o código esteja devidamente commitado em cada branch correspondente.
-3. **README Individual:** Cada branch deve conter um README.md próprio explicando as decisões técnicas tomadas, como configurar e rodar a aplicação para aquele nível.
-4. **Demonstração:** Opcional, mas recomendado. Inclua uma demonstração ao vivo ou um vídeo explicando a aplicação e as funcionalidades implementadas.
+As duas rotas existentes no microsserviço estão bem documentadas e exemplificadas conforme a imagem:
 
-## Avaliação
+![Preview Swagger Auth API](docs/preview-swagger-auth.png)
 
-Os candidatos serão avaliados com base nos seguintes critérios:
+## Overview
 
-- **Código Limpo e Manutenível:** Organização do código, padrões de projeto, legibilidade e comentários.
-- **Funcionalidade:** Atendimento aos requisitos mínimos e adicionais conforme o nível.
-- **Qualidade dos Testes:** Cobertura e eficácia dos testes unitários e de integração.
-- **Desempenho:** Capacidade de lidar com carga elevada, eficiência do uso de cache e concorrência.
-- **Documentação:** Qualidade e clareza da documentação da API e do código.
-- **Inovação e Melhoria:** Implementação de funcionalidades adicionais que demonstrem criatividade e conhecimento avançado.
+A plataforma possui um fluxo de Cadastro (`/auth/signup`) e Login (`/auth/login`) após autenticado o usuário é redirecionado para o Feed (`/feed`). A partir dali o usuário pode criar postagens e reagir a postagens de outros usuários.
 
-## Como Iniciar
+Acessando o perfil (`/profile`) é possível editar e listar as próprias postagens e gerenciar postagens curtidas.
 
-1. Clone este repositório:
+## Tecnologias utilizadas
 
-2. Navegue até o diretório correspondente ao seu nível e tecnologia escolhida.
-   
-3. Siga as instruções do README específico da branch para rodar a aplicação e começar a desenvolver.
+### Backend
 
-Boa sorte!
+O Nest é um framework para criar APIs e utilizei para criar cada microsserviço. O serviço de autenticação utiliza JWT para autenticar o usuário e expira a cada 1 hora.
+
+O Auth Guard foi replicado para os demais microsserviços e eles utilizam a mesma secret no ambiente para destrinchar o token JWT e resgatar o id do usuário autenticado, para assim realizar operações e salvar dados com base no usuário autenticado.
+
+TypeORM foi utilizado para fazer queries ao banco e resgatar dados.
+
+Cada microsserviço possui migrations que mantém a estrutura do banco documentada conforme for atualizado.
+
+### Frontend
+
+O Next foi o framework de frontend de escolha. Utilizando SSR e SSG quando necessário.
+
+O [shadcn](https://ui.shadcn.com/) é uma biblioteca de componentes que utilizei.
+
+Utilizei o [Tailwind](https://tailwindcss.com/) como principal forma de estilizar os componentes.
+
+Com a utilização do shadcn, os componentes são instalados conforme a necessidade e ficam na pasta `/components/ui`. Alguns eu customizei e salvei em uma pasta alterando o nome do arquivo original para `primitive.tsx`.
+
+Utilizei o [Next Auth](https://next-auth.js.org/) para gerenciamento de sessões do usuário, armazenando o token de autenticação JWT retornado no backend para as próximas requisições aos demais microsserviços.
+
+Utilizei o [Next PWA](https://www.npmjs.com/package/@ducanh2912/next-pwa) para utilizar Service Workers e manter o APP rodando em modo Offline (para testar esse fluxo é necessário alterar o NODE_ENV do frontend e rodar os comandos `yarn build` e `yarn start`).
+
+Utilizei o [TanStack Query](https://tanstack.com/query/latest) para realizar a maioria das requisições, com ele é possivel pegar as propriedades de `isLoading` e `isPending` para tornar o app mais dinâmico assim como invalidar queries. (ex.: ao adicionar uma postagem, invalidar a chamada que lista as postagens para serem resgatadas novamente).
+
+Utilizei o [React Hook Form](https://www.react-hook-form.com/) para validação e gerenciamento de formulários no App inteiro.
+
+## Melhorias futuras
+
+- API Gateway para evitar muitas chamadas a diferentes microsserviços
+- RabbitMQ para replicar dados do perfil do usuário dentro dos posts, com a atualização do usuário o perfil no post é atualizado e mantém a consistencia de dados.
+- Websocket para manter o feed atualizado
+- Paginação
+- Swagger nos outros microsserviços
+- Dynamic import components
+- Deletar perfil
+- Try catches no front e back para evitar erros
+- Cache redis
+- Otimizar consultas
+- Service workers para aplicação funcionar offline
+- Monitoramento e logs com ELK Stack
