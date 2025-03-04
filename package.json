@@ -10,6 +10,6 @@
   ],
   "scripts": {
     "start:dev": "yarn workspace auth-service start:dev & yarn workspace profile-service start:dev & yarn workspace post-service start:dev",
-    "migration:run": "yarn workspace auth-service migration:run & yarn workspace profile-service migration:run & yarn workspace post-service migration:run"
+    "migration:run": "yarn workspace auth-service workspace:migration:run & yarn workspace profile-service workspace:migration:run & yarn workspace post-service workspace:migration:run"
   }
 }
