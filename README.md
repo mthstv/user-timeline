@@ -20,7 +20,7 @@ O usuário pode também gerenciar seu perfil como desejar.
 
 O projeto está estruturado em workspaces, portanto, os comandos abaixo serão executados na raiz do projeto.
 
-Para o banco de dados eu coloquei no projeto um docker-compose.yml que roda o postgres localmente e o Adminer para gerar uma GUI de gerenciamento de banco de dados.
+Para o banco de dados eu coloquei no projeto um docker-compose.yml que roda o postgres localmente e o Adminer (http://localhost:8080) para gerar uma GUI de gerenciamento de banco de dados. Certifique-se de que esteja na branch correta (senior)
 
 1. Rode o docker compose para subir o banco de dados:
 
@@ -74,11 +74,11 @@ Acessando o perfil (`/profile`) é possível editar e listar as próprias postag
 
 ### Backend
 
-O Nest é um framework para criar APIs e utilizei para criar cada microsserviço. O serviço de autenticação utiliza JWT para autenticar o usuário e expira a cada 1 hora.
+O [Nest](https://nestjs.com/) é um framework para criar APIs e utilizei para criar cada microsserviço. O serviço de autenticação utiliza JWT para autenticar o usuário e expira a cada 1 hora.
 
 O Auth Guard foi replicado para os demais microsserviços e eles utilizam a mesma secret no ambiente para destrinchar o token JWT e resgatar o id do usuário autenticado, para assim realizar operações e salvar dados com base no usuário autenticado.
 
-TypeORM foi utilizado para fazer queries ao banco e resgatar dados.
+[TypeORM](https://typeorm.io/) foi utilizado para fazer queries ao banco e resgatar dados.
 
 Cada microsserviço possui migrations que mantém a estrutura do banco documentada conforme for atualizado.
 
@@ -88,9 +88,9 @@ O Next foi o framework de frontend de escolha. Utilizando SSR e SSG quando neces
 
 O [shadcn](https://ui.shadcn.com/) é uma biblioteca de componentes que utilizei.
 
-Utilizei o [Tailwind](https://tailwindcss.com/) como principal forma de estilizar os componentes.
-
 Com a utilização do shadcn, os componentes são instalados conforme a necessidade e ficam na pasta `/components/ui`. Alguns eu customizei e salvei em uma pasta alterando o nome do arquivo original para `primitive.tsx`.
+
+Utilizei o [Tailwind](https://tailwindcss.com/) como principal forma de estilizar os componentes.
 
 Utilizei o [Next Auth](https://next-auth.js.org/) para gerenciamento de sessões do usuário, armazenando o token de autenticação JWT retornado no backend para as próximas requisições aos demais microsserviços.
 
@@ -102,14 +102,14 @@ Utilizei o [React Hook Form](https://www.react-hook-form.com/) para validação 
 
 ## Melhorias futuras
 
-- API Gateway para evitar muitas chamadas a diferentes microsserviços
-- RabbitMQ para replicar dados do perfil do usuário dentro dos posts, com a atualização do usuário o perfil no post é atualizado e mantém a consistencia de dados.
-- Websocket para manter o feed atualizado
-- Paginação
-- Dynamic import components
-- Deletar perfil
-- Try catches no front e back para evitar erros
-- Cache redis
-- Monitoramento e logs com ELK Stack
-- Testes unitários e de integração
-- Validações de formulário (Yup)
+- API Gateway para evitar muitas chamadas a diferentes microsserviços;
+- Testes unitários e de integração;
+- RabbitMQ para replicar dados do perfil do usuário dentro dos posts, com a atualização do usuário o perfil no post é atualizado e mantém a consistencia de dados;
+- Validações de formulário (Yup);
+- Websocket para manter o feed atualizado;
+- Paginação;
+- Dynamic import components;
+- Deletar perfil;
+- Try catches no front e back para evitar erros;
+- Cache redis;
+- Monitoramento e logs com ELK Stack.
