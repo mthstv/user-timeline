@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { postsAPI } from "@/lib/axios";
 
 export async function getAllPosts() {
-  const session = await auth();
+  const session = await auth() as SessionUser;
   try {
     const { data } = await postsAPI.get(`/posts`, {
       headers: {
@@ -24,7 +24,7 @@ export async function getAllPosts() {
 }
 
 export async function getAuthPosts() {
-  const session = await auth();
+  const session = await auth() as SessionUser;
   try {
     const { data } = await postsAPI.get(`/posts/user/auth`, {
       headers: {
@@ -44,7 +44,7 @@ export async function getAuthPosts() {
 }
 
 export async function getLikedPosts() {
-  const session = await auth();
+  const session = await auth() as SessionUser;
   try {
     const { data } = await postsAPI.get(`/posts/liked/auth`, {
       headers: {
@@ -66,7 +66,7 @@ export async function getLikedPosts() {
 export async function likePost(
   { id }: UserPost
 ) {
-  const session = await auth();
+  const session = await auth() as SessionUser;
 
   const { data } = await postsAPI.post('/posts/like', {
     postId: id
@@ -82,7 +82,7 @@ export async function likePost(
 export async function createPost(
   { content }: UserPost
 ) {
-  const session = await auth();
+  const session = await auth() as SessionUser;
 
   const { data } = await postsAPI.post('/posts', {
     content

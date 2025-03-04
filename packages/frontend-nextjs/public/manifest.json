@@ -1,0 +1,6 @@
+{
+  "name": "User Timeline",
+  "short_name": "Timeline",
+  "start_url": "/",
+  "display": "standalone"
+}

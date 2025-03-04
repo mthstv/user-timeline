@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { profilesAPI } from "@/lib/axios";
 
 export async function getProfile() {
-  const session = await auth();
+  const session = await auth() as SessionUser;
 
   const { data } = await profilesAPI.get(`/profiles/auth`, {
     headers: {
@@ -28,7 +28,7 @@ export async function getProfile() {
 
 export async function getProfileByUser(userId?: string) {
   if (!userId) return;
-  const session = await auth();
+  const session = await auth() as SessionUser;
 
   const { data } = await profilesAPI.get(`/profiles/user/${userId}`, {
     headers: {
@@ -54,7 +54,7 @@ export async function getProfileByUser(userId?: string) {
 export async function createProfile(
   { username, displayName, accessToken }: UserProfile & { accessToken: string }
 ) {
-  const session = await auth();
+  const session = await auth() as SessionUser;
 
   const { data } = await profilesAPI.post('/profiles', {
     username,
@@ -72,7 +72,7 @@ export async function createProfile(
 export async function updateProfile(
   { username, displayName, bio, avatar }: UserProfile
 ) {
-  const session = await auth();
+  const session = await auth() as SessionUser;
 
   const { data } = await profilesAPI.patch('/profiles', {
     username,
