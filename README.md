@@ -1,17 +1,22 @@
 # User Timeline
 
-Esse projeto é um desafio realizado em Nextjs e Microsserviços Nestjs. O Objetivo era criar uma Timeline em que usuários possam postar e reagir as postagens.
+Esse projeto é um desafio realizado em Nextjs e Microsserviços Nestjs.
+
+O Objetivo era criar uma Timeline em que usuários possam postar e reagir as postagens.
+
 O usuário pode também gerenciar seu perfil como desejar.
 
 ![Peview 1](docs/preview-1.png)
+
+![Peview 2](docs/preview-2.png)
+
+## Rodando o projeto
 
 ### Requisitos
 
 - Node v20.11.1
 - Yarn
 - Docker
-
-## Rodando o projeto
 
 O projeto está estruturado em workspaces, portanto, os comandos abaixo serão executados na raiz do projeto.
 
@@ -56,6 +61,8 @@ Atualmente configurei o Swagger somente na API de Auth, acessando essa URL com o
 As duas rotas existentes no microsserviço estão bem documentadas e exemplificadas conforme a imagem:
 
 ![Preview Swagger Auth API](docs/preview-swagger-auth.png)
+
+Utilizei o Postman para mapear as requisições e endpoints, o export está nesse arquivo: [docs/User-Timeline.postman_collection.json](docs/User-Timeline.postman_collection.json)
 
 ## Overview
 
