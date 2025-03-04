@@ -32,7 +32,7 @@ export class ProfilesService {
   }
 
   async removeByUserId(userId: string) {
-    await this.profilesRepository.delete({ userId });
+    await this.profilesRepository.softDelete({ userId });
 
     return { message: 'Profile deleted successfully' };
   }

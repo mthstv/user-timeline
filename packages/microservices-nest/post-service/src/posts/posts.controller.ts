@@ -54,7 +54,10 @@ export class PostsController {
   }
 
   @Get('/user/:userId')
-  findByUserId(@Request() req: { user: AuthUserDto }, @Param('userId') userId: string) {
+  findByUserId(
+    @Request() req: { user: AuthUserDto },
+    @Param('userId') userId: string,
+  ) {
     return this.postsService.findByUserId(userId, req.user?.sub);
   }
 
@@ -80,5 +83,10 @@ export class PostsController {
   @Delete(':id')
   remove(@Request() req: { user: AuthUserDto }, @Param('id') id: string) {
     return this.postsService.remove(id, req.user?.sub);
+  }
+
+  @Delete('/user/auth')
+  removeAuthPosts(@Request() req: { user: AuthUserDto }) {
+    return this.postsService.removeAuthPosts(req.user?.sub);
   }
 }
