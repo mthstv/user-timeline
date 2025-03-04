@@ -28,17 +28,16 @@ export class PostsService {
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
       .addSelect((qb) =>
         qb
-          .select('COUNT(likes.id)', 'hasLiked')
-          .from('like', 'likes')
-          .where('likes.postId = post.id')
-          .andWhere('likes.userId = :userId', { userId: authUserId })
+          .select('COUNT(likeSub.id)', 'hasLiked')
+          .from('like', 'likeSub')
+          .where('likeSub.postId = post.id')
+          .andWhere('likeSub.userId = :userId', { userId: authUserId })
       , 'hasLiked')
       .orderBy('post.createdAt', 'DESC')
       .getRawAndEntities()
-      .then(({ entities, raw }) => (
-        entities.map((post, index) => ({
-          ...post,
-          hasLiked: Boolean(Number(raw[index].hasLiked)),
+      .then(({ entities, raw }) => (entities.map((post) => ({
+        ...post,
+        hasLiked: Boolean(+raw.find((r) => r.post_id === post.id)?.hasLiked)
       }))));
   }
 
@@ -50,17 +49,16 @@ export class PostsService {
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
       .addSelect((qb) =>
         qb
-          .select('COUNT(likes.id)', 'hasLiked')
-          .from('like', 'likes')
-          .where('likes.postId = post.id')
-          .andWhere('likes.userId = :userId', { userId: authUserId })
+          .select('COUNT(likeSub.id)', 'hasLiked')
+          .from('like', 'likeSub')
+          .where('likeSub.postId = post.id')
+          .andWhere('likeSub.userId = :userId', { userId: authUserId })
       , 'hasLiked')
       .orderBy('post.createdAt', 'DESC')
       .getRawAndEntities()
-      .then(({ entities, raw }) =>
-        (entities.map((post, index) => ({
-          ...post,
-          hasLiked: Boolean(Number(raw[index].hasLiked)),
+      .then(({ entities, raw }) => (entities.map((post) => ({
+        ...post,
+        hasLiked: Boolean(+raw.find((r) => r.post_id === post.id)?.hasLiked)
       }))));
   }
 
@@ -72,16 +70,16 @@ export class PostsService {
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
       .addSelect((qb) =>
         qb
-          .select('COUNT(likes.id)', 'hasLiked')
-          .from('like', 'likes')
-          .where('likes.postId = post.id')
-          .andWhere('likes.userId = :userId', { userId: authUserId })
-        , 'hasLiked')
+          .select('COUNT(likeSub.id)', 'hasLiked')
+          .from('like', 'likeSub')
+          .where('likeSub.postId = post.id')
+          .andWhere('likeSub.userId = :userId', { userId: authUserId })
+      , 'hasLiked')
       .getRawAndEntities()
-      .then(({ entities, raw }) => ({
-          ...entities[0],
-          hasLiked: Boolean(Number(raw[0].hasLiked)),
-      }));
+      .then(({ entities, raw }) => (entities.map((post) => ({
+        ...post,
+        hasLiked: Boolean(+raw.find((r) => r.post_id === post.id)?.hasLiked)
+      }))));
   }
 
   async findByUserLikes(userId: string, authUserId: string) {
@@ -92,18 +90,17 @@ export class PostsService {
       .loadRelationCountAndMap('post.likesCount', 'post.likes')
       .addSelect((qb) =>
         qb
-          .select('COUNT(likes.id)', 'hasLiked')
-          .from('like', 'likes')
-          .where('likes.postId = post.id')
-          .andWhere('likes.userId = :userId', { userId: authUserId })
+          .select('COUNT(likeSub.id)', 'hasLiked')
+          .from('like', 'likeSub')
+          .where('likeSub.postId = post.id')
+          .andWhere('likeSub.userId = :userId', { userId: authUserId })
       , 'hasLiked')
       .orderBy('post.createdAt', 'DESC')
       .getRawAndEntities()
-      .then(({ entities, raw }) => {
-        return entities.map((post, index) => ({
-          ...post,
-          hasLiked: Boolean(Number(raw[index].hasLiked)),
-      }))});
+      .then(({ entities, raw }) => (entities.map((post) => ({
+        ...post,
+        hasLiked: Boolean(+raw.find((r) => r.post_id === post.id)?.hasLiked)
+      }))));
   }
 
   async update(id: string, createdBy: string, updatePostDto: UpdatePostDto) {
