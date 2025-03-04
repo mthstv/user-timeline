@@ -13,16 +13,24 @@ type FeedListProps = {
 export const FeedList = ({ limitBy }: FeedListProps) => {
   const [posts, setPosts] = useState<UserPost[]>([]);
 
-  const fetchPostsWithProfile = async () => {
-    const posts: UserPost[] = await fetchPosts();
+  const fetchPosts = async () => {
+    if (limitBy === 'own-posts') return await getAuthPosts();
+    if (limitBy === 'liked-posts') return await getLikedPosts();
+    return await getAllPosts();
+  };
 
-    const userIdsFromPosts = [...new Set(posts.map((post) => post.createdBy))];
+  const fetchPostsWithProfile = async () => {
+    const fetchedPosts: UserPost[] = await fetchPosts();
+
+    const userIdsFromPosts = [
+      ...new Set(fetchedPosts.map((post) => post.createdBy)),
+    ];
 
     const profiles = await Promise.all(
       userIdsFromPosts.map((userId) => getProfileByUser(userId))
     );
 
-    const postsWithProfile = posts.map((post) => {
+    const postsWithProfile = fetchedPosts.map((post) => {
       const profile = profiles.find(
         (profile: UserProfile) => profile.userId === post.createdBy
       );
@@ -31,21 +39,6 @@ export const FeedList = ({ limitBy }: FeedListProps) => {
 
     setPosts(postsWithProfile);
     return postsWithProfile;
-  };
-
-  const fetchPosts = async () => {
-    let posts: UserPost[] = [];
-    if (limitBy === 'own-posts') {
-      posts = await getAuthPosts();
-    }
-
-    if (limitBy === 'liked-posts') {
-      posts = await getLikedPosts();
-    }
-
-    posts = await getAllPosts();
-
-    return posts;
   };
 
   const { isLoading } = useQuery({
