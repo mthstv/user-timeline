@@ -87,3 +87,24 @@ export async function updateProfile(
 
   return data;
 }
+
+export async function removeAuthProfile() {
+  try {
+    const session = await auth() as SessionUser;
+
+    const { data } = await profilesAPI.delete('/profiles', {
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`
+      }
+    });
+
+    if (data.error) {
+      throw new Error(data.error);
+    }
+    
+    return data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}

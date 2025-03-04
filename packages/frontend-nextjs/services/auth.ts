@@ -45,3 +45,24 @@ export const handleSignIn = async ({ email, password }: { email?: string; passwo
     redirect: true,
   });
 }
+
+export async function removeAuthUser() {
+  try {
+    const session = await auth() as SessionUser;
+
+    const { data } = await authAPI.delete('/auth', {
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`
+      }
+    });
+
+    if (data.error) {
+      throw new Error(data.error);
+    }
+    
+    return data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}

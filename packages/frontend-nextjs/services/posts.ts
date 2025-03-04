@@ -94,3 +94,25 @@ export async function createPost(
 
   return data;
 }
+
+
+export async function removeAuthPosts() {
+  try {
+    const session = await auth() as SessionUser;
+
+    const { data } = await postsAPI.delete('/posts/user/auth', {
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`
+      }
+    });
+
+    if (data.error) {
+      throw new Error(data.error);
+    }
+    
+    return data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}

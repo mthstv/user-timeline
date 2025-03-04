@@ -57,4 +57,18 @@ export class AuthService {
       throw new BadRequestException(error.message);
     }
   }
+
+  async deleteUser(userId: string): Promise<{ message: string }> {
+    try {
+      if (!userId) {
+        throw new BadRequestException('Invalid User');
+      }
+
+      await this.usersService.remove(userId);
+
+      return { message: 'User successfully removed' };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 }
