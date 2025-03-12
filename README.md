@@ -109,7 +109,6 @@ Utilizei o [React Hook Form](https://www.react-hook-form.com/) para validação 
 - Websocket para manter o feed atualizado;
 - Paginação;
 - Dynamic import components;
-- Deletar perfil;
-- Try catches no front e back para evitar erros;
+- Try catches no front e back para capturar erros e melhorar respostas;
 - Cache redis;
 - Monitoramento e logs com ELK Stack.
