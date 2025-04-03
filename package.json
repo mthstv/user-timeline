@@ -6,6 +6,12 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/*"
-  ]
+    "packages/**"
+  ],
+  "scripts": {
+    "setup": "yarn && sh ./scripts/init-envs.sh && yarn migration:run",
+    "start:microservices": "yarn workspace auth-service start:dev & yarn workspace profile-service start:dev & yarn workspace post-service start:dev",
+    "start:web": "yarn workspace frontend-nextjs dev",
+    "migration:run": "yarn workspace auth-service workspace:migration:run & yarn workspace profile-service workspace:migration:run & yarn workspace post-service workspace:migration:run"
+  }
 }
