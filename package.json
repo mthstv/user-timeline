@@ -1,8 +1,8 @@
 {
-  "name": "app-mono-test",
+  "name": "user-timeline",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:leandro-andrade-candido/app-mono-test.git",
+  "repository": "git@github.com:mthstv/user-timeline.git",
   "license": "MIT",
   "private": true,
   "workspaces": [
